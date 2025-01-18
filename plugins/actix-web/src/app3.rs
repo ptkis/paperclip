@@ -347,7 +347,10 @@ where
                     actix_web::web::get().to(move |request: HttpRequest| {
                         let filename = request.match_info().query("filename");
                         if filename.is_empty() && request.query_string().is_empty() {
-                            let redirect_url = format!("{}/index.html?url={}", path, spec_path);
+                            let redirect_url = format!(
+                                "{}/index.html?url={}&oauth2RedirectUrl={}/oauth2-redirect.html",
+                                path, spec_path, path
+                            );
                             HttpResponse::PermanentRedirect()
                                 .header("Location", redirect_url)
                                 .finish()

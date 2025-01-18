@@ -327,43 +327,40 @@ where
 
         self.inner = self.inner.take().map(|a| {
             a.service(
-                actix_web::web::resource([regex_path.to_owned(), path.clone()]).route(
-                    actix_web::web::get().to(move |request: HttpRequest| {
-                        let path = path.clone();
-                        let spec_path = spec_path.clone();
-                        async move {
-                            let filename = request.match_info().query("filename");
-                            if filename.is_empty() && request.query_string().is_empty() {
-                                let redirect_url = format!("{}/index.html?url={}", path, spec_path);
-                                HttpResponse::PermanentRedirect()
-                                    .append_header(("Location", redirect_url))
-                                    .finish()
-                            } else {
-                                let mut response = HttpResponse::Ok().body(
-                                    SWAGGER_DIST
-                                        .get_file(filename)
-                                        .unwrap_or_else(|| {
-                                            panic!("Failed to get file {}", filename)
-                                        })
-                                        .contents(),
-                                );
-                                if let Some(guess_result) = mime_guess::from_path(filename).first()
-                                {
-                                    if let Ok(header) =
-                                        actix_web::http::header::HeaderValue::from_str(
-                                            guess_result.essence_str(),
-                                        )
-                                    {
-                                        response
-                                            .headers_mut()
-                                            .insert(actix_web::http::header::CONTENT_TYPE, header);
-                                    }
+                actix_web::web::resource([regex_path.to_owned(), path.clone()])
+                    .route(actix_web::web::get().to(move |request: HttpRequest| {
+                    let path = path.clone();
+                    let spec_path = spec_path.clone();
+                    async move {
+                        let filename = request.match_info().query("filename");
+                        if filename.is_empty() && request.query_string().is_empty() {
+                            let redirect_url = format!(
+                                "{}/index.html?url={}&oauth2RedirectUrl={}/oauth2-redirect.html",
+                                path, spec_path, path
+                            );
+                            HttpResponse::PermanentRedirect()
+                                .append_header(("Location", redirect_url))
+                                .finish()
+                        } else {
+                            let mut response = HttpResponse::Ok().body(
+                                SWAGGER_DIST
+                                    .get_file(filename)
+                                    .unwrap_or_else(|| panic!("Failed to get file {}", filename))
+                                    .contents(),
+                            );
+                            if let Some(guess_result) = mime_guess::from_path(filename).first() {
+                                if let Ok(header) = actix_web::http::header::HeaderValue::from_str(
+                                    guess_result.essence_str(),
+                                ) {
+                                    response
+                                        .headers_mut()
+                                        .insert(actix_web::http::header::CONTENT_TYPE, header);
                                 }
-                                response
                             }
+                            response
                         }
-                    }),
-                ),
+                    }
+                })),
             )
         });
         self
