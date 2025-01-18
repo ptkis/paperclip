@@ -4,11 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.9.1] - 2024-09-10
+## [0.9.4] - 2024-10-23
+### Fixed
+- Various cli-ng fixes. [PR#547](https://github.com/paperclip-rs/paperclip/pull/547)
+
+## [0.9.3] - 2024-10-21
+### Added
+- Experimental openapiv3 cli codegen. [PR#506](https://github.com/paperclip-rs/paperclip/pull/506)
+
+## [0.9.2] - 2024-10-13
+### Fixed
+- Switch to pro-macro-error2. [PR#545](https://github.com/paperclip-rs/paperclip/pull/545)
+- Bumps paperclip-macros to 0.7.0 to fix breaking change in 0.6.4. [PR#546](https://github.com/paperclip-rs/paperclip/pull/546)
+
+## [0.9.1] - 2024-09-10 [ YANKED ]
 ### Fixed
 - Support array field type. [PR#531](https://github.com/paperclip-rs/paperclip/pull/531)
 
-## [0.9.0] - 2024-09-07
+## [0.9.0] - 2024-09-07 [ YANKED ]
 ### Fixed
 - Support latest openapiv3 and indexmap. [PR#507](https://github.com/paperclip-rs/paperclip/pull/507)
 - Clippy useless vec lint. [PR#511](https://github.com/paperclip-rs/paperclip/pull/511)
@@ -77,7 +90,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Allow automatically adding the module path to the openapi component name, via a feature "path-in-definition" [PR#373](https://github.com/paperclip-rs/paperclip/pull/373)
 - Add missing ip, ipv4 and ipv6 string format types
 - Add support for actix-web 4
-  - Middleware support does not support non-`BoxBody` response payload types. 
+  - Middleware support does not support non-`BoxBody` response payload types.
     As a workaround you can use `actix-web::middlware::Compat`.
 - Add support for Schemas wrapping Generic types (e.g. `DataResponse<T>` where `T` also derives
 `Apiv2Schema`) [PR#332](https://github.com/paperclip-rs/paperclip/pull/332)

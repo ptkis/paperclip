@@ -1,6 +1,6 @@
 [package]
 name = "paperclip-core"
-version = "0.7.1"
+version = "0.7.2"
 edition = "2018"
 description = "Core types and traits for paperclip OpenAPI tooling library"
 documentation = "https://paperclip-rs.github.io/paperclip/paperclip_core"
@@ -9,7 +9,7 @@ homepage = "https://github.com/paperclip-rs/paperclip"
 repository = "https://github.com/paperclip-rs/paperclip"
 
 [dependencies]
-paperclip-macros = { path = "../macros", version = "0.6.5" }
+paperclip-macros = { path = "../macros", version = "0.7.0" }
 actix-web2 = { version = "2", optional = true, default-features = false, package = "actix-web" }
 actix-web3 = { version = "3", optional = true, default-features = false, package = "actix-web" }
 actix-web4 = { version = "4", optional = true, default-features = false, package = "actix-web" }
@@ -38,7 +38,7 @@ actix-web-validator2 = { version = "2.2", optional = true, package = "actix-web-
 actix-web-validator3 = { version = "3.0", optional = true, package = "actix-web-validator" }
 validator12 = { version = "0.12", features = ["derive"], optional = true, package = "validator" }
 validator14 = { version = "0.14", features = ["derive"], optional = true, package = "validator" }
-openapiv3 = { version = "1.0.3", optional = true }
+openapiv3-paper = { version = "2.0", optional = true }
 
 [features]
 # actix-web support
@@ -55,7 +55,7 @@ nightly = ["paperclip-macros/nightly"]
 
 # OpenAPI support (v2 and codegen)
 v2 = ["paperclip-macros/v2"]
-v3 = ["v2", "openapiv3"]
+v3 = ["v2", "openapiv3-paper"]
 codegen = ["v2", "heck", "log"]
 uuid = ["uuid0"]
 uuid0 = ["uuid0_dep"]
