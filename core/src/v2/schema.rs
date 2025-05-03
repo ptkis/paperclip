@@ -89,7 +89,7 @@ fn _schema_contains_any<'a, S: Schema>(schema: &'a S, mut nodes: Vec<&'a str>) -
     }
 
     if let Some(name) = schema.name() {
-        if nodes.iter().any(|&n| n == name) {
+        if nodes.contains(&name) {
             return false; // We've encountered a cycle.
         } else {
             nodes.push(name);
@@ -176,13 +176,13 @@ macro_rules! impl_type_simple {
     };
 }
 
-impl<'a> TypedData for &'a str {
+impl TypedData for &str {
     fn data_type() -> DataType {
         DataType::String
     }
 }
 
-impl<'a, T: TypedData> TypedData for &'a T {
+impl<T: TypedData> TypedData for &T {
     fn data_type() -> DataType {
         T::data_type()
     }
@@ -195,6 +195,12 @@ impl<'a, T: TypedData> TypedData for &'a T {
 impl_type_simple!(char, DataType::String);
 impl_type_simple!(String, DataType::String);
 impl_type_simple!(PathBuf, DataType::String);
+#[cfg(feature = "camino")]
+impl_type_simple!(
+    camino::Utf8PathBuf,
+    DataType::String,
+    DataTypeFormat::Binary
+);
 impl_type_simple!(bool, DataType::Boolean);
 impl_type_simple!(f32, DataType::Number, DataTypeFormat::Float);
 impl_type_simple!(f64, DataType::Number, DataTypeFormat::Double);
@@ -528,7 +534,7 @@ impl<T: Apiv2Schema + Clone> Apiv2Schema for std::borrow::Cow<'_, T> {
     }
 }
 
-impl<'a, T: Apiv2Schema> Apiv2Schema for &'a [T] {
+impl<T: Apiv2Schema> Apiv2Schema for &[T] {
     fn raw_schema() -> DefaultSchemaRaw {
         Vec::<T>::raw_schema()
     }
