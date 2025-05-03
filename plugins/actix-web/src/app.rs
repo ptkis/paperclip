@@ -337,11 +337,13 @@ where
                             let host = request.headers()
                                 .get("X-Forwarded-Host")
                                 .and_then(|h| h.to_str().ok())
-                                .unwrap_or_else(|| request.connection_info().host());
+                                .map(|s| s.to_string())
+                                .unwrap_or_else(|| request.connection_info().host().to_string());
                             let scheme = request.headers()
                                 .get("X-Forwarded-Proto")
                                 .and_then(|h| h.to_str().ok())
-                                .unwrap_or_else(|| request.connection_info().scheme());
+                                .map(|s| s.to_string())
+                                .unwrap_or_else(|| request.connection_info().scheme().to_string());
                             let base_url = format!("{}://{}", scheme, host);
                             let redirect_url = format!(
                                 "{}/index.html?url={}&oauth2RedirectUrl={}{}/oauth2-redirect.html",
