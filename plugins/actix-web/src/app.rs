@@ -334,18 +334,9 @@ where
                     async move {
                         let filename = request.match_info().query("filename");
                         if filename.is_empty() && request.query_string().is_empty() {
-                            let host = request.headers()
-                                .get("X-Forwarded-Host")
-                                .and_then(|h| h.to_str().ok())
-                                .unwrap_or_else(|| request.connection_info().host());
-                            let scheme = request.headers()
-                                .get("X-Forwarded-Proto")
-                                .and_then(|h| h.to_str().ok())
-                                .unwrap_or_else(|| request.connection_info().scheme());
-                            let base_url = format!("{}://{}", scheme, host);
                             let redirect_url = format!(
-                                "{}/index.html?url={}&oauth2RedirectUrl={}{}/oauth2-redirect.html",
-                                path, spec_path, base_url, path
+                                "{}/index.html?url={}&oauth2RedirectUrl={}/oauth2-redirect.html",
+                                path, spec_path, path
                             );
                             HttpResponse::PermanentRedirect()
                                 .append_header(("Location", redirect_url))
